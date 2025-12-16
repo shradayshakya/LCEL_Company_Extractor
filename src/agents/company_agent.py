@@ -1,6 +1,7 @@
 from typing import List
-from langchain_core.runnables import RunnableLambda, RunnableSequence
+from langchain_core.runnables import RunnableLambda 
 from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers import StrOutputParser
 import os
 import boto3
 from langchain_aws import ChatBedrock
@@ -43,7 +44,7 @@ def _make_bedrock_llm():
 
 def build_extractor():
     llm = _make_bedrock_llm()
-    chain = company_prompt | llm | RunnableLambda(lambda x: x.content)
+    chain = company_prompt | llm | StrOutputParser()
     return chain
 
 
