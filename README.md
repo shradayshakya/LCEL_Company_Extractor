@@ -20,10 +20,6 @@ docker compose up -d
 # DATABASE_URL should be: postgresql+psycopg2://postgres:postgres@localhost:5432/companies
 ```
 
-## Migrations
-
-Uses SQLAlchemy `create_all()` at runtime. Alembic can be added if desired.
-
 ## Run
 
 Provide a file path to the CLI:
@@ -44,3 +40,5 @@ python -m src.cli /Users/you/path/to/essay.txt
 
 Table: `Company_details`
 Columns: id, company_name, founded_in, founded_by(JSON list as string)
+
+![Company_details table](image.png)

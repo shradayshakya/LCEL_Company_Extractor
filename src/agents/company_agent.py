@@ -47,11 +47,36 @@ def build_extractor():
     return chain
 
 
+def _clean_json_text(text: str) -> str:
+    """
+    Make the LLM output parseable JSON by removing Markdown code fences
+    and isolating the JSON substring if extra prose is present.
+    """
+    t = text.strip()
+    # Remove Markdown code fences like ```json ... ``` or ``` ... ```
+    import re
+    m = re.search(r"```(?:json|JSON)?\s*(.*?)```", t, flags=re.DOTALL)
+    if m:
+        t = m.group(1).strip()
+
+    # If there is extra prose around JSON, isolate the primary JSON block
+    starts = [i for i in [t.find("["), t.find("{")] if i != -1]
+    if starts:
+        start = min(starts)
+        if t[start] == "[":
+            end = t.rfind("]")
+        else:
+            end = t.rfind("}")
+        if end != -1 and end >= start:
+            t = t[start : end + 1].strip()
+    return t
+
+
 def to_records(json_text: str) -> ExtractionResult:
     import json
 
     try:
-        items = json.loads(json_text)
+        items = json.loads(_clean_json_text(json_text))
         records: List[CompanyRecord] = []
         for it in items:
             d = normalize_date(it.get("founded_in"))
