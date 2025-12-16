@@ -1,0 +1,27 @@
+[project]
+name = "lcel-company-extractor"
+version = "0.1.0"
+description = "LCEL agent that extracts company details and writes to PostgreSQL"
+authors = [{name = "User"}]
+requires-python = ">=3.10"
+
+dependencies = [
+	"langchain>=0.3.7",
+	"langchain-aws>=0.2.0",
+	"boto3>=1.34.0",
+	"psycopg2-binary>=2.9.9",
+	"pydantic>=2.9.0",
+	"python-dotenv>=1.0.1",
+	"dateparser>=1.2.0",
+	"sqlalchemy>=2.0.34",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[tool.black]
+line-length = 100
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
